@@ -1,0 +1,85 @@
+<div class="container">
+<div class="page-header">
+    <h1 class="page-header-title">Editar Prestador</h1>
+  </div>
+
+  <mat-accordion class="example-headers-align">
+      <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Datos Personales
+          </mat-panel-title>
+          <mat-panel-description>
+            Ingrese los datos personales del prestador
+            <mat-icon>assignment_ind</mat-icon>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <mat-form-field>
+          <mat-label>Apellido</mat-label>
+          <input matInput [(ngModel)]="dataLender.surname" name="surname" required>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Nombre</mat-label>
+          <input matInput [(ngModel)]="dataLender.name" name="name" required>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Dirección</mat-label>
+          <input matInput [(ngModel)]="dataLender.address" name="address" required>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Provincia</mat-label>
+          <input matInput [(ngModel)]="dataLender.location" name="location" required>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Email</mat-label>
+          <input matInput type="email" [(ngModel)]="dataLender.email" name="email" required>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Telefono</mat-label>
+          <span matPrefix>+54 &nbsp;</span>
+          <input matInput type="number" [(ngModel)]="dataLender.phone" name="phone" required placeholder="3795187444">
+        </mat-form-field>
+
+        <mat-action-row>
+          <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
+        </mat-action-row>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Especialidades
+          </mat-panel-title>
+          <mat-panel-description>
+            Ingrese los datos médicos
+            <mat-icon>healing</mat-icon>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <mat-form-field>
+          <mat-label>Especialidad</mat-label>
+          <input matInput [(ngModel)]="dataLender.specialism" name="specialism" required>
+        </mat-form-field>
+
+        <div class="row">
+          <mat-form-field appearance="fill">
+            <mat-label>Estado</mat-label>
+            <mat-select [(value)]="dataLender.status">
+              <mat-option [value]="1">ACTIVO</mat-option>
+              <mat-option [value]="0">ELIMINADO</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <mat-action-row>
+          <button mat-button color="warn" routerLink="/prestadores">Cancelar</button>
+          <button mat-button color="warn" (click)="prevStep()">Anterior</button>
+          <button mat-button color="primary" (click)="nextStep();updateLender()">Guardar</button>
+        </mat-action-row>
+      </mat-expansion-panel>
+
+    </mat-accordion>
+
+    <h4 class="txt-right txt-legend">Ultima modificacion: {{updateTime | datetime}}</h4>
+  </div>

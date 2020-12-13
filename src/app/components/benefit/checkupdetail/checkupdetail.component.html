@@ -1,0 +1,25 @@
+<div class="container">
+    <h1>Detalle de Visitas</h1>
+    <div class="header">
+        <h3>Prestador: {{lenderName}}</h3>
+    </div>
+    <mat-table [dataSource]="dataSource" class="mat-elevation-2" *ngIf="!dataEmpty">
+        <ng-container matColumnDef="observations">
+            <mat-header-cell *matHeaderCellDef>Observaciones</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.obs}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="date">
+            <mat-header-cell *matHeaderCellDef>Fecha - Hora</mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.date}}</mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns"
+        (click)="openMapView(row)"></mat-row>
+    </mat-table>
+
+    <div class="dataEmpty" *ngIf="dataEmpty">
+        <h3>Momentaneamente no se registraron visitas.</h3>
+    </div>
+</div>

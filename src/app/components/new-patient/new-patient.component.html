@@ -1,0 +1,99 @@
+<div class="container">
+  <button mat-icon-button aria-label="Volver a prestaciones" routerLink="/pacientes">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <h1 class="page-header-title">Nuevo Paciente</h1>
+
+  <mat-accordion class="example-headers-align">
+    <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+      <mat-expansion-panel-header>
+          <mat-panel-title>
+              Datos del Paciente&#160;
+              <mat-icon>person_add</mat-icon>
+          </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <div class="row">
+        <div class="col-12 col-md-5 me-md-auto">
+        <mat-form-field class="example-full-width">
+          <mat-label>Apellido</mat-label>
+          <input matInput [(ngModel)]="datosPaciente.surname" name="surname" />
+        </mat-form-field>
+      </div>
+        <div class="col-12 col-md-5">
+        <mat-form-field class="example-full-width">
+          <mat-label>Nombre</mat-label>
+          <input matInput [(ngModel)]="datosPaciente.name" name="name" />
+        </mat-form-field>
+      </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12 col-md-5 me-md-auto"><mat-form-field class="example-full-width">
+          <mat-label>DNI</mat-label>
+          <input matInput [(ngModel)]="datosPaciente.dni" name="dni" />
+        </mat-form-field></div>
+        <div class="col-12 col-md-5"><mat-form-field class="example-full-width">
+          <mat-label>Edad</mat-label>
+          <input matInput [(ngModel)]="datosPaciente.years" name="years" />
+        </mat-form-field></div>
+      </div>
+
+
+
+      <div class="row">
+        <div class="col-12 col-md-5 me-md-auto">
+          <mat-form-field id="selectHI" class="no-underline example-full-width" appearance="fill">
+          <mat-label>Obras sociales</mat-label>
+          <!-- <mat-select [(ngModel)]="selectSBenefit" name="selectSBenefit" (selectionChange)="setBenefitSelected($event)"> -->
+          <mat-select [(ngModel)]="selectHI.id" name="HI">
+            <mat-option id="HI" *ngFor="let item of hIData" [value]="item.id">
+              {{ item.name | uppercase }}, {{ item.location | uppercase }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+  </div>
+        <div class="col-12 col-md-5 ms-md-auto"> <mat-form-field class="example-full-width">
+          <mat-label>N° de Obra Social</mat-label>
+          <input matInput [(ngModel)]="datosPaciente.number_health_insurance" placeholder="Numero de obra social" name="number_health_insurance" />
+        </mat-form-field></div>
+      </div>
+
+
+    <div class="row">
+      <div class="col-12 col-md-5 me-md-auto"><mat-form-field class="example-full-width">
+        <mat-label>Provincia</mat-label>
+        <input matInput placeholder="Corrientes" [(ngModel)]="datosPaciente.location" name="location" />
+      </mat-form-field></div>
+      <div class="col-12 col-md-5"><mat-form-field class="example-full-width">
+        <mat-label>Dirección</mat-label>
+        <input matInput placeholder="Necochea 1693" [(ngModel)]="datosPaciente.address" name="address" />
+      </mat-form-field>
+      </div>
+    </div>
+
+<div class="row">
+  <div class="col-12 col-md-5 me-md-auto"><mat-form-field class="example-full-width">
+    <mat-label>Telefono</mat-label>
+    <input matInput maxlength="11" placeholder="37955187444" [(ngModel)]="datosPaciente.phone" name="phone" />
+  </mat-form-field></div>
+  <div class="col-12 col-md-5"><mat-form-field class="example-full-width">
+    <mat-label>email</mat-label>
+    <input matInput type="email" placeholder="ejemplo@correo.com" [(ngModel)]="datosPaciente.email"
+      name="email" />
+  </mat-form-field></div>
+</div>
+
+
+
+
+
+  <div class="col-12 col-md-11 col-offset-md-1">
+    <mat-action-row >
+      <button mat-button color="warn" routerLink="/pacientes">Cancelar</button>
+      <button mat-raised-button color="primary" (click)="savePatient()">Guardar</button>
+    </mat-action-row>
+  </div>
+  </mat-expansion-panel>
+  </mat-accordion>
+</div>

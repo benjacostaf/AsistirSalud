@@ -1,0 +1,114 @@
+<div class="container">
+  <div class="page-header">
+    <button mat-icon-button aria-label="Volver a prestaciones" routerLink="/prestadores">
+      <mat-icon style="margin:0 auto;">arrow_back</mat-icon>
+    </button>
+      <h1 class="page-header-title">Nueva Prestador</h1>
+  </div>
+
+  <mat-accordion class="example-headers-align">
+      <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Datos Personales
+          </mat-panel-title>
+          <mat-panel-description>
+            Ingrese los datos personales del prestador
+            <mat-icon>assignment_ind</mat-icon>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+    <div class="row">
+        <mat-form-field class="col-12 col-md-3">
+          <mat-label>Apellido</mat-label>
+          <input matInput [(ngModel)]="dataUser.surname" name="surname">
+        </mat-form-field>
+        <mat-form-field class="col-12 col-md-3">
+          <mat-label>Nombre</mat-label>
+          <input matInput [(ngModel)]="dataUser.name" name="name">
+        </mat-form-field>
+        <mat-form-field class="col-12 col-md-3">
+          <mat-label>Dirección</mat-label>
+          <input matInput [(ngModel)]="dataUser.address" name="address">
+        </mat-form-field>
+      </div>
+        <div class="row">
+        <mat-form-field class="col-12 col-md-3">
+          <mat-label>Provincia</mat-label>
+          <input matInput [(ngModel)]="dataUser.location" name="location">
+        </mat-form-field>
+        <mat-form-field class="col-12 col-md-3">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" [(ngModel)]="dataUser.email" name="email">
+        </mat-form-field>
+        <mat-form-field class="col-12 col-md-3">
+          <mat-label>Telefono</mat-label>
+          <input matInput type="number" [(ngModel)]="dataUser.phone" name="phone">
+        </mat-form-field>
+      </div>
+
+        <mat-action-row>
+          <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
+        </mat-action-row>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Especialidades
+          </mat-panel-title>
+          <mat-panel-description>
+            Ingrese los datos médicos
+            <mat-icon>healing</mat-icon>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+    <div class="row">
+        <mat-form-field class="col-12 col-md-3">
+          <mat-label>Especialidad</mat-label>
+          <input matInput [(ngModel)]="dataLender.specialism" name="specialism">
+        </mat-form-field>
+        <mat-form-field class="col-12 col-md-3">
+          <mat-label>Matrícula</mat-label>
+          <input matInput [(ngModel)]="dataLender.enrolment" name="enrolment">
+        </mat-form-field>
+        <mat-form-field class="col-12 col-md-3">
+          <mat-label>Horas disponible por día</mat-label>
+          <input matInput type="number" min="1" max="24" [(ngModel)]="dataLender.hours_avaibles" name="hours_avaibles">
+        </mat-form-field>
+      </div>
+        <mat-action-row>
+          <button mat-button color="warn" (click)="prevStep()">Anterior</button>
+          <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
+        </mat-action-row>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Credenciales de acceso
+          </mat-panel-title>
+          <mat-panel-description>
+            Datos para ingresar al sistema
+            <mat-icon>vpn_key</mat-icon>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+    <div class="row">
+        <mat-form-field class="col-12 col-md-5">
+          <mat-label>Usuario</mat-label>
+          <input matInput [(ngModel)]="dataLogin.username" name="username">
+        </mat-form-field>
+        <mat-form-field class="col-12 col-md-5">
+          <mat-label>Contraseña</mat-label>
+          <input matInput type="password" [(ngModel)]="dataLogin.password" name="password" [type]="hide ? 'password' : 'text'" >
+          <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </mat-form-field>
+      </div>
+
+        <mat-action-row>
+          <button mat-button color="warn" routerLink="/prestadores">Cancelar</button>
+          <button mat-button color="warn" (click)="prevStep()">Anterior</button>
+          <button mat-button color="primary" (click)="nextStep();guardarRegistro()">Guardar</button>
+        </mat-action-row>
+      </mat-expansion-panel>
+
+    </mat-accordion>
+  </div>

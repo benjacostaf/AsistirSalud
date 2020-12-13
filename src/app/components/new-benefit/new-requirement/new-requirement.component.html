@@ -1,0 +1,37 @@
+<div class="full-width">
+  <h3>Nuevo Requerimiento</h3>
+  <h5>Prestador</h5>
+    <mat-form-field class="example-full-width">
+        <input type="text"
+               placeholder="Seleccione prestador para asignar el requerimiento"
+               aria-label="text"
+               matInput
+               [formControl]="controlLender"
+               [matAutocomplete]="auto"                     
+               (change)="getLenderSelected()"
+        >
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let option of optionsLender" [value]="option['display']" (click)="setLenderSelect(option.index, option.id_lender)">
+            {{option.display}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+    <h5>Indicación</h5>
+    <mat-form-field class="example-full-width">
+      <mat-label>Ingrese la indicación a seguir</mat-label>
+      <textarea matInput [(ngModel)]="selectIndication" name="selectIndication" placeholder="1 vez por día. 3 hs por sesión"></textarea>
+    </mat-form-field>
+  
+    <mat-form-field class="example-full-width">
+      <mat-label>Indique horas diarias</mat-label>
+      <input matInput [(ngModel)]="selectHours" name="selectHours" placeholder="3" type="number" min="1" max="24">
+  </mat-form-field>   
+
+  <mat-action-row>
+    <button mat-button color="warn">Cancelar</button>
+    <!-- <button mat-button color="accent" (click)="nextStep();sendMessage()">Enviar</button> -->
+    <button mat-button color="accent" (click)="addRequirement()">Añadir</button>
+  </mat-action-row>
+  
+</div>

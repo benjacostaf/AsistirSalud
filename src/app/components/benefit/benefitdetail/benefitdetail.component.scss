@@ -1,0 +1,29 @@
+.mat-input-element{
+    caret-color: #fff;
+    background-color: #fff;
+}
+
+.no-underline{
+    background-color: none!important;
+}
+
+.example-full-width{
+    width:100%;
+}
+
+mat-toolbar{
+    background-color: #fff;
+}
+
+mat-action-row{
+    float: right;
+}
+
+.dataEmpty>h3,.dataEmpty>h4{
+    text-align: center;
+    color: #0000008a;
+}
+
+.dataEmpty>h4:hover{
+    color: blue;
+}

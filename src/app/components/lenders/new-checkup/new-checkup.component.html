@@ -1,0 +1,36 @@
+<div class="container">
+  <h2>Nueva Visita</h2>
+  <div class="row">
+    <form>
+      <h4>Seleccione Prestación</h4>
+      <mat-form-field id="selectBenefitCheckup" class="no-underline" appearance="fill">
+        <mat-label>Prestaciones asignadas</mat-label>
+        <mat-select [(ngModel)]="selectSBenefit" name="selectSBenefit" (selectionChange)="setBenefitSelected($event)">
+          <mat-option id="OptionsBenefitAssigned" *ngFor="let item of sBenefitData" [value]="item">
+            Paciente: {{item.patient}} <br> Requerimiento: {{item.requirements}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <p> Indicaciones: {{selectIndications}} </p>
+    </form>
+  </div>
+    
+
+      <mat-divider></mat-divider>
+
+      <div class="row">
+        <h4>Observaciones</h4>
+      <textarea matInput [(ngModel)]="selectText" name="selectText" placeholder="Indique sus observaciones"></textarea>
+      </div>
+      
+      <mat-divider></mat-divider>
+
+      <div class="row row-mat-action">
+        <mat-action-row>
+          <button mat-button color="warn" >Anterior</button>
+          <!-- <button mat-button color="accent" (click)="nextStep();sendMessage()">Enviar</button> -->
+          <button mat-button color="accent" (click)="saveNewCheckup()">Listo</button>
+        </mat-action-row>
+      </div>
+      
+</div>

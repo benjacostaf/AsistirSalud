@@ -1,0 +1,245 @@
+<div class="container">
+    <div class="page-header">
+      <button mat-icon-button aria-label="Volver a prestaciones" routerLink="/prestaciones">
+        <mat-icon style="margin:0 auto;">arrow_back</mat-icon>
+      </button>
+        <h1 class="page-header-title">Editar Prestación</h1>
+    </div>
+    <mat-accordion class="example-headers-align">
+        <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Datos de Paciente
+                </mat-panel-title>
+                <mat-panel-description>
+                    Edite los datos del paciente y prestación
+                    <mat-icon>assignment_ind</mat-icon>
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+
+              <form id="form-hi" class="example-full-width">
+                <mat-form-field id="selectPatient" class="no-underline example-full-width" appearance="fill">
+                  <mat-label>Paciente</mat-label>
+                  <!-- <mat-select [(ngModel)]="selectSBenefit" name="selectSBenefit" (selectionChange)="setBenefitSelected($event)"> -->
+                  <mat-select [(value)]="data.benefit.id_patient" name="Patient">
+                    <mat-option id="Patient" *ngFor="let item of optionsPatient" [value]="item.value" (click)="selectedPatient(item.value)">
+                      {{item.display | uppercase}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </form>
+            <div class="row">
+            <h4>Cobertura médica</h4>
+            </div>
+            <div class="row">
+              <div class="col-12 col-md-6">
+            <mat-form-field appearance="fill">
+                <mat-label>Obra Social</mat-label>
+                <mat-select [(value)]="selectHI.id" name="HI" disabled>
+                    <mat-option id="HI" [value]="option.id" *ngFor="let option of hIData">{{ option.name | uppercase}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>N. OS</mat-label>
+                <input matInput [(ngModel)]="data.benefit.number_health_insurance" name="number_health_insurance"
+                    disabled>
+            </mat-form-field>
+          </div>
+          <div class="col-12 col-md-6">
+        <h4>Fechas de Prestación</h4>
+            <mat-form-field id="date_start_at">
+                <mat-label>Inicio</mat-label>
+                <input matStartDate matInput [(ngModel)]="data.benefit.start_at" [matDatepicker]="date_start_at"
+                    (focus)="date_start_at.open()" readonly>
+            </mat-form-field>
+            <mat-datepicker touchUi #date_start_at></mat-datepicker>
+            <mat-form-field id="date_finish_at">
+                <mat-label>Inicio</mat-label>
+                <input matStartDate matInput [(ngModel)]="data.benefit.finish_at" [matDatepicker]="date_finish_at"
+                    (focus)="date_finish_at.open()" readonly>
+            </mat-form-field>
+            <mat-datepicker touchUi #date_finish_at></mat-datepicker>
+          </div>
+            <br>
+            <mat-form-field class="example-full-width">
+                <mat-label>Diagnóstico</mat-label>
+                <input matInput type="email" [(ngModel)]="data.benefit.diagnosis" name="diagnosis" required>
+            </mat-form-field>
+          </div>
+            <h4>Estado de prestación</h4>
+            <mat-form-field appearance="fill">
+                <mat-label>Estado</mat-label>
+                <mat-select [(value)]="data.benefit.status">
+                    <mat-option [value]="option.value" *ngFor="let option of statusBenefitData">{{ option.display | uppercase}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-action-row>
+                <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
+            </mat-action-row>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Prestadores
+                </mat-panel-title>
+                <mat-panel-description>
+                    Edite prestadores asignados y sus requerimientos
+                    <mat-icon>healing</mat-icon>
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <div class="row">
+                <button id="btn-newLender" mat-button color="accent" (click)="openNewReq()">Asignar nuevo prestador</button>
+            </div>
+            <div>
+                <mat-table #tableLender [dataSource]="auxItems" class="mat-elevation-z4">
+                    <ng-container matColumnDef="Lender">
+                        <mat-header-cell *matHeaderCellDef>Prestador</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.name}}</mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Requirement">
+                        <mat-header-cell *matHeaderCellDef>Requerimiento</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.req}}</mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Indication">
+                        <mat-header-cell *matHeaderCellDef>Indicación</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.ind}}</mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Hours">
+                        <mat-header-cell *matHeaderCellDef>Horas por día</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.hs}}</mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="status">
+                      <mat-header-cell *matHeaderCellDef>Estado</mat-header-cell>
+                      <mat-cell *matCellDef="let element">{{element.status | benefitStatus}}</mat-cell>
+                  </ng-container>
+
+
+                    <ng-container matColumnDef="Options">
+                        <mat-header-cell *matHeaderCellDef>Más</mat-header-cell>
+                        <mat-cell *matCellDef="let element">
+                            <button class="button-row" mat-menu-item (click)="editLender(element)">
+                                <mat-icon class="icon-button-row">create</mat-icon>
+                            </button>
+                            <button class="button-row" mat-menu-item>
+                                <mat-icon class="icon-button-row" (click)="deleteLender(element)">delete</mat-icon>
+                            </button>
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+                </mat-table>
+            </div>
+
+            <mat-action-row>
+                <button mat-button color="warn" routerLink="/prestaciones">Cancelar</button>
+                <button mat-button color="warn" (click)="prevStep()">Anterior</button>
+                <button mat-button color="primary" (click)="updateDataBenefit()">Guardar</button>
+            </mat-action-row>
+        </mat-expansion-panel>
+
+    </mat-accordion>
+</div>
+
+<ng-template #editLenderTemplate class="container">
+    <form id="form-hi" class="example-full-width">
+        <mat-form-field id="selectPatient" class="col-12 no-underline example-full-width" appearance="fill">
+          <mat-label>Prestador</mat-label>
+          <!-- <mat-select [(ngModel)]="selectSBenefit" name="selectSBenefit" (selectionChange)="setBenefitSelected($event)"> -->
+          <mat-select [(value)]="auxLenderEdit.id_lender" name="Patient" disabled>
+            <mat-option id="Patient" *ngFor="let item of optionsLender" [value]="item.id_lender" (click)="selectLender(item)">
+              {{item.display | uppercase}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </form>
+      <div class="row">
+        <mat-form-field class="col-12">
+            <mat-label>Requerimiento</mat-label>
+            <input matInput [(ngModel)]="auxLenderEdit.req" name="number_health_insurance"
+                required disabled>
+        </mat-form-field>
+      </div>
+      <div class="row">
+        <mat-form-field class="col-12">
+            <mat-label>Indicaciones</mat-label>
+            <input matInput [(ngModel)]="auxLenderEdit.ind" name="number_health_insurance"
+                required>
+        </mat-form-field>
+      </div>
+      <div class="row">
+        <mat-form-field class="col-12">
+            <mat-label>Horas</mat-label>
+            <input matInput [(ngModel)]="auxLenderEdit.hs" name="hours"
+                required>
+        </mat-form-field>
+      </div>
+      <div class="row">
+        <mat-form-field class="col-auto" appearance="fill">
+          <mat-label>Estado</mat-label>
+          <mat-select [(value)]="auxLenderEdit.status">
+              <mat-option [value]="option.value" *ngFor="let option of statusData">{{ option.display | uppercase}}</mat-option>
+          </mat-select>
+      </mat-form-field>
+    </div>
+      <div class="row">
+        <p class="txt-legend">Ultima modificación: {{updatedTimeLender | datetime}}</p>
+      </div>
+      <div class="row">
+        <mat-action-row>
+            <button mat-button color="warn" (click)="cancel()">Cancelar</button>
+            <button mat-flat-button color="primary" (click)="saveEditLender()">Guardar</button>
+        </mat-action-row>
+      </div>
+</ng-template>
+
+<ng-template #newReqTemplate class="container">
+  <h1 class="text-center">Nuevo requerimiento</h1>
+  <div class="row">
+  <mat-form-field id="selectPatient" class="col-12 no-underline example-full-width" appearance="fill">
+    <mat-label>Prestador</mat-label>
+    <!-- <mat-select [(ngModel)]="selectSBenefit" name="selectSBenefit" (selectionChange)="setBenefitSelected($event)"> -->
+    <mat-select name="Lenders">
+      <mat-option id="Lenders" *ngFor="let item of optionsLender" [value]="item.id_lender" (click)="selectLender(item)">
+        {{item.display | uppercase}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  </div>
+  <div class="row">
+    <mat-form-field class="col-12">
+        <mat-label>Requerimiento</mat-label>
+        <input matInput [(ngModel)]="auxLenderEdit.req" name="number_health_insurance"
+            required disabled>
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <mat-form-field class="col-12">
+        <mat-label>Indicaciones</mat-label>
+        <input matInput [(ngModel)]="auxLenderEdit.ind" name="number_health_insurance"
+            required>
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <mat-form-field class="col-12">
+        <mat-label>Horas</mat-label>
+        <input matInput [(ngModel)]="auxLenderEdit.hs" name="hours"
+            required>
+    </mat-form-field>
+  </div>
+
+  <div class="row">
+    <mat-action-row>
+        <button mat-button color="warn" (click)="cancel()">Cancelar</button>
+        <button mat-flat-button color="primary" (click)="saveNewReq()">Guardar</button>
+    </mat-action-row>
+  </div>
+
+</ng-template>

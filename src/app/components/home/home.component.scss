@@ -1,0 +1,96 @@
+/* div{
+    background-image: url('/assets/imagen-unsplash.jpg');
+} */
+/* .container{
+    margin: 0;
+    padding: 0;
+    height:100vh;
+    display: flex;
+} */
+$benefits-color: #E91E63;
+$patients-color: #FFC107;
+$checkups-color: #8BC34A;
+
+.main-div{
+  background-image: url('/assets/bg.png');
+  background-position: left center;
+  background-size: cover;
+  height: 100vh;
+
+  .container{
+    margin-top: 5%;
+  }
+}
+
+
+
+.col-3{
+    width: 33.333%;
+    background-color: #27AAE1;
+    display: inline-flex;
+    height: inherit;
+    color: #fff;
+}
+.col-3>h2,.col-3>h4{
+    height:fit-content;
+    margin-top:10%;
+}
+
+.col-9{
+    width: 66.666%;
+    display: inline-flex;
+    height: inherit;
+    background-color: #eeeeee;
+}
+h1{
+    color: #2B3990;
+    text-align: center;
+    font-size: xx-large;
+    margin-left: auto;
+    height: fit-content;
+    margin-top: 4%;
+    display: inline-block;
+    margin-right: auto;
+}
+
+.img img{
+    position: absolute;
+}
+
+.card-report{
+    background-color: #27AAE1;
+    border-top: 10px solid #2B3990;
+    height: fit-content;
+
+    img{
+        width:100%;
+        position: absolute;
+    }
+}
+
+#card-report-benefits{
+    background-color: $benefits-color;
+    border-color: darken($benefits-color, 10%);
+    button{
+        background-color: lighten($benefits-color, 10%);
+        box-shadow: none;
+    }
+}
+
+#card-report-patients{
+    background-color: $patients-color;
+    border-color: darken($patients-color,10%);
+    button{
+        background-color: lighten($patients-color, 10%);
+        box-shadow: none;
+    }
+}
+
+#card-report-checkups{
+    background-color: $checkups-color;
+    border-color: darken($checkups-color,10%);
+    button{
+        background-color: lighten($checkups-color, 10%);
+        box-shadow: none;
+    }
+}

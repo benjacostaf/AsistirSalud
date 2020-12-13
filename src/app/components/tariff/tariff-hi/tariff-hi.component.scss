@@ -1,0 +1,26 @@
+h1{
+    width: 60%;
+    display: inline-grid;
+}
+
+form{
+    width: 50%;
+    display: inline-grid;
+    padding: 0 1%;
+}
+
+#form-hi-date{
+    width: 20%;
+}
+
+#selectHI{
+    width:100%;
+}
+
+.options-button{
+    display: inline-grid;
+    width: 40%;
+    position: absolute;
+    justify-items: flex-end;
+    margin-right: 5%;
+}

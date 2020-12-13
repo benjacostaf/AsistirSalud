@@ -1,0 +1,45 @@
+a {
+    text-decoration: none;
+    color: white;
+}
+ 
+a:hover, a:active{
+    color: lightgray;
+}
+ 
+.navigation-items{
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+ 
+@media(max-width: 959px){
+    mat-toolbar{
+        border-radius: 0px;
+    }
+}
+
+.icon-toolbar{
+    width: 40px;
+    height: 40px;
+    margin-top: auto;
+}
+
+.spacer{
+    flex: 1 1 auto!important;
+}
+
+.mat-primary{
+    background-color: #2B3990;
+}
+
+.menu-text{
+    margin-left: 5%;
+    color: #27AAE1;
+}
+
+.logo-text{
+    margin-right: 1%;
+    margin-bottom: .5%;
+    font-size: larger;
+}

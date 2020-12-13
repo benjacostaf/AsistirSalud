@@ -1,0 +1,64 @@
+<div class="container">    
+</div>
+<div class="header row">
+    <h1>Tarifario Obras Sociales</h1>
+    <div class="options-button">
+        <button mat-button [matMenuTriggerFor]="menu">
+            opciones <mat-icon>more_vert</mat-icon>
+        </button>            
+    </div>
+</div>
+
+
+<div class="row">
+    <form id="form-hi">
+      <h4>Seleccione Obra Social</h4>
+      <mat-form-field id="selectHI" class="no-underline" appearance="fill">
+        <mat-label>Obras sociales</mat-label>
+        <!-- <mat-select [(ngModel)]="selectSBenefit" name="selectSBenefit" (selectionChange)="setBenefitSelected($event)"> -->
+        <mat-select>
+          <mat-option id="OptionsBenefitAssigned" *ngFor="let item of hIData" [value]="item">
+            {{item.name | uppercase}}, {{item.location | uppercase}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>  
+    
+    <form id="form-hi-date">
+        <h4>Seleccione Tarifario</h4>
+        <mat-form-field id="selectHI" class="no-underline" appearance="fill">            
+          <mat-label>12/11/2020 - 12/12/2020</mat-label>
+          <!-- <mat-select [(ngModel)]="selectSBenefit" name="selectSBenefit" (selectionChange)="setBenefitSelected($event)"> -->
+          <mat-select>
+            <mat-option id="OptionsBenefitAssigned" *ngFor="let item of hIData" [value]="item">
+              Paciente: {{item.name}} <br> Requerimiento: {{item.location}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </form> 
+        <!-- <button mat-button [matMenuTriggerFor]="menu" [matMenuTriggerData]="{element: element}"> -->            
+  </div>
+
+  <mat-menu #menu="matMenu" yPosition="below">
+    <ng-template matMenuContent>
+        <button mat-menu-item [matMenuTriggerFor]="ObraSocial">Obra Social</button>
+        <button mat-menu-item [matMenuTriggerFor]="Tarifario">Tarifario</button>
+        <button mat-menu-item [matMenuTriggerFor]="Otros">Otras Opciones</button>
+    </ng-template>
+  </mat-menu>
+  
+  <mat-menu #ObraSocial="matMenu">
+    <button mat-menu-item routerLink="/obras-sociales/nueva" ><mat-icon>add</mat-icon>Nueva Obra Social</button>
+    <button mat-menu-item ><mat-icon>create</mat-icon>Editar</button>
+    <button mat-menu-item ><mat-icon>delete</mat-icon>Eliminar Obra Social</button>
+  </mat-menu>
+
+  <mat-menu #Tarifario="matMenu">
+    <button mat-menu-item routerLink="/tarifas/nueva/obras-social"><mat-icon>add</mat-icon>Nuevo Tarifario</button>
+    <button mat-menu-item ><mat-icon>create</mat-icon>Editar</button>
+    <button mat-menu-item ><mat-icon>delete</mat-icon>Eliminar</button>
+  </mat-menu>
+
+  <mat-menu #Otros="matMenu">
+    <button mat-menu-item disabled><mat-icon>save_alt</mat-icon>Descargar tarifario</button>
+  </mat-menu>                      

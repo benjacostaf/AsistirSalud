@@ -1,0 +1,17 @@
+<div class="container">
+    <div id="map-container" class="map">
+        <h1>MAPA</h1>
+        <div style="width: 640px; height: 480px" id="itemMap"></div>
+    </div>
+    <div class="errorMap" *ngIf="errorMap">
+        <h1>Oops..</h1>
+    <p>
+        Error de conexión con el servidor de HERE Maps. <br>
+        Compruebe su conexión a internet.        
+    </p>
+        <mat-action-row>
+            <button mat-button (click)="refreshSite();">ok</button>
+        </mat-action-row>    
+    </div>
+    
+</div>

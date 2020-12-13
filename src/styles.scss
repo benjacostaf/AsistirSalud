@@ -1,1 +1,87 @@
-/* You can add global styles to this file, and also import other style files */
+@import '~material-icons/iconfont/material-icons.css';
+@import './bootstrap-grid.css';
+
+/* for sidenav to take a whole page */
+html, body {
+    margin: 0;
+    height: 100%;
+}
+
+.txt-center{
+    text-align: center!important;
+}
+
+.txt-right{
+    text-align: end;
+}
+
+.txt-legend{
+  margin-top: 1%!important;
+    color: #818181;
+}
+
+.title-header{
+    display: inline-flex;
+    button{
+        float: right;
+    }
+}
+.form-full-width{
+    width:70%;
+    margin-left: 15%;
+}
+
+.mat-header-cell{
+    justify-content:center;
+}
+
+.mat-cell{
+    justify-content:center;
+}
+
+mat-form-field.no-underline>.mat-form-field-wrapper>.mat-form-field-underline{
+    background-color:#00000000;
+}
+
+mat-form-field.no-underline>.mat-form-field-wrapper>.mat-form-field-underline:before{
+    background-color:#00000000;
+}
+
+mat-option#OptionsBenefitAssigned{
+    line-height: 2em;
+    height: 5em;
+}
+
+mat-bottom-sheet-container{
+    display:block!important;
+    max-width: none!important;
+    min-width: 100%!important;
+
+}
+
+.mat-bottom-sheet-custom{
+    width:90vw;
+    margin-right: 5%;
+    padding: 0;
+}
+
+.mat-snack-bar-container{
+    text-align: center;
+    margin-left: auto!important;
+    margin-right: auto!important;
+    /* background-color: #27AAE1; */
+  }
+
+  //login component - login form
+  .mat-card-header-text{
+      margin: 0 auto!important;
+  }
+
+  .spacer{
+    flex: 1 1 auto!important;
+}
+
+.page-header-title{
+  display: inline-block;
+  vertical-align: sub;
+}

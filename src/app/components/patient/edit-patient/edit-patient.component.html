@@ -1,0 +1,93 @@
+<div class="container">
+<div class="page-header">
+  <button mat-icon-button aria-label="Volver a prestaciones" routerLink="/pacientes">
+    <mat-icon style="margin:0 auto;">arrow_back</mat-icon>
+  </button>
+    <h1 class="page-header-title">Editar Paciente</h1>
+</div>
+<mat-accordion class="example-headers-align">
+    <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Datos Personales
+        </mat-panel-title>
+        <mat-panel-description>
+          Ingrese los datos personales del prestador
+          <mat-icon>assignment_ind</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <div class="row">
+        <div class="col-12 col-sm-5 me-sm-auto">
+          <mat-form-field class="form-field-100">
+          <mat-label>Apellido</mat-label>
+          <input matInput [(ngModel)]="dataPatient.surname" name="surname" required>
+        </mat-form-field></div>
+        <div class="col-12 col-sm-5 me-sm-auto"><mat-form-field class="form-field-100">
+          <mat-label>Nombre</mat-label>
+          <input matInput [(ngModel)]="dataPatient.name" name="name" required>
+        </mat-form-field></div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-sm-5 me-sm-auto"><form id="form-hi">
+          <mat-form-field id="selectHI" class="no-underline" appearance="fill">
+            <mat-label>Obras sociales</mat-label>
+            <mat-select [(value)]="selectHI.id" name="HI">
+              <mat-option *ngFor="let item of hIData" [value]="item.id">
+                {{item.name | uppercase}}, {{item.location | uppercase}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </form></div>
+        <div class="col-12 col-sm-5 me-sm-auto"><mat-form-field class="form-field-100">
+          <mat-label>No. OS</mat-label>
+          <input matInput [(ngModel)]="dataPatient.number_health_insurance" name="number_health_insurance" required>
+        </mat-form-field>
+    </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12 col-sm-5 me-sm-auto"><mat-form-field class="form-field-100">
+        <mat-label>Dirección</mat-label>
+        <input matInput [(ngModel)]="dataPatient.address" name="address" required>
+      </mat-form-field></div>
+      <div class="col-12 col-sm-5 me-sm-auto"><mat-form-field class="form-field-100">
+        <mat-label>Provincia</mat-label>
+        <input matInput [(ngModel)]="dataPatient.location" name="location" required>
+      </mat-form-field></div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-sm-5 me-sm-auto"><mat-form-field class="form-field-100">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" [(ngModel)]="dataPatient.email" name="email" required>
+      </mat-form-field></div>
+      <div class="col-12 col-sm-5 me-sm-auto"><mat-form-field class="form-field-100">
+        <mat-label>Telefono</mat-label>
+        <span matPrefix>+54 &nbsp;</span>
+        <input matInput type="number" [(ngModel)]="dataPatient.phone" name="phone" required placeholder="3795187444">
+      </mat-form-field></div>
+    </div>
+
+    <h4>Estado de paciente</h4>
+      <div class="row">
+        <div class="col-5">
+        <mat-form-field appearance="fill" class="form-field-100">
+            <mat-label>Estado</mat-label>
+            <mat-select [(value)]="status">
+                <mat-option [value]="option.value" *ngFor="let option of statusPatient">{{ option.display | uppercase}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+      </div>
+      </div>
+
+      <mat-action-row>
+        <button mat-button color="warn" routerLink="/pacientes">Cancelar</button>
+        <button mat-button color="primary" (click)="nextStep();updatePatient()">Guardar</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+
+  </mat-accordion>
+
+  <h4 class="txt-right txt-legend">Ultima modificacion: {{updateTime | datetime}}</h4>
+
+</div>

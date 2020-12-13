@@ -1,0 +1,119 @@
+<!-- Menu para administrador -->
+
+<mat-nav-list *ngIf="admin">
+  <a mat-list-item routerLink="/home" (click)="onSidenavClose()">
+    <mat-icon>home</mat-icon> <span class="nav-caption">Inicio</span>
+  </a>
+  <mat-list-item [matMenuTriggerFor]="menuPacientes">
+    <mat-icon>face</mat-icon>
+    <span class="nav-caption">Pacientes</span>
+  </mat-list-item>
+  <mat-menu #menuPacientes="matMenu">
+    <button mat-menu-item routerLink="/pacientes" (click)="onSidenavClose()">Ver Pacientes</button>
+    <button mat-menu-item (click)="onSidenavClose()" disabled>Pacientes Activos</button>    
+  </mat-menu>
+
+  <mat-list-item [matMenuTriggerFor]="menuPrestadores">
+    <mat-icon>healing</mat-icon>
+    <span class="nav-caption">Prestadores</span>
+  </mat-list-item>
+  <mat-menu #menuPrestadores="matMenu">
+    <button mat-menu-item routerLink="/prestadores" (click)="onSidenavClose()">Ver Prestadores</button>
+    <button mat-menu-item (click)="onSidenavClose()" disabled >Prestadores Activos</button>
+    <button mat-menu-item routerLink="/nuevo-prestador" (click)="onSidenavClose()">Nuevo Prestador</button>
+  </mat-menu>
+
+  <mat-list-item [matMenuTriggerFor]="menuPrestaciones">
+    <mat-icon>assignment</mat-icon>
+    <span class="nav-caption">Prestaciones</span>
+  </mat-list-item>
+  <mat-menu #menuPrestaciones="matMenu">
+    <button mat-menu-item routerLink="/prestaciones" (click)="onSidenavClose()">Ver Prestaciones</button>
+    <button mat-menu-item (click)="onSidenavClose()" disabled>Prestaciones Activas</button>
+    <button mat-menu-item routerLink="/nueva-prestacion" (click)="onSidenavClose()">Nuevo Prestación</button>
+  </mat-menu>
+
+  <mat-list-item [matMenuTriggerFor]="menuReportes">
+    <mat-icon>insert_chart</mat-icon>
+    <span class="nav-caption">Reportes</span>
+  </mat-list-item>
+  <mat-menu #menuReportes="matMenu">    
+    <button mat-menu-item disabled>Reporte Obra Social</button>
+    <button mat-menu-item disabled>Reporte Pacientes</button>
+    <button mat-menu-item disabled>Reporte Prestadores</button>
+  </mat-menu>
+
+  <mat-list-item [matMenuTriggerFor]="menuObrasSociales">
+    <mat-icon>payments</mat-icon>
+    <span class="nav-caption">Obras Sociales</span>
+  </mat-list-item>
+  <mat-menu #menuObrasSociales="matMenu">
+    <button mat-menu-item (click)="onSidenavClose()" routerLink="/obras-sociales">Ver Obras Sociales</button>
+    <button mat-menu-item (click)="onSidenavClose()" routerLink="/obras-sociales/nueva">Nueva Obra Social</button>
+  </mat-menu>
+
+  <mat-list-item [matMenuTriggerFor]="menuTarifarios">
+    <mat-icon>monetization_on</mat-icon>
+    <span class="nav-caption">Tarifarios</span>
+  </mat-list-item>
+  <mat-menu #menuTarifarios="matMenu">    
+    <button mat-menu-item (click)="onSidenavClose()" routerLink="/tarifas/obras-sociales">Tarifario Obras Sociales</button>
+    <button mat-menu-item disabled>Tarifario Prestadores</button>
+  </mat-menu>
+
+  <mat-list-item [matMenuTriggerFor]="menuFacturacion">
+    <mat-icon>payments</mat-icon>
+    <span class="nav-caption">Facturación</span>
+  </mat-list-item>
+  <mat-menu #menuFacturacion="matMenu">
+    <button mat-menu-item (click)="onSidenavClose()" routerLink="/facturacion">Facturación General</button>
+    <button mat-menu-item (click)="onSidenavClose()" routerLink="/facturacion/obras-sociales">Facturación Obra Social</button>
+    <button mat-menu-item (click)="onSidenavClose()" disabled>Facturación Pacientes</button>
+    <button mat-menu-item (click)="onSidenavClose()" disabled>Facturación Prestadores</button>
+  </mat-menu>
+
+  <mat-list-item [matMenuTriggerFor]="menuMiCuenta">
+    <mat-icon>assignment_ind</mat-icon>
+    <span class="nav-caption">{{name}}</span>
+  </mat-list-item>
+  <mat-menu #menuMiCuenta="matMenu">
+    <button mat-menu-item (click)="onSidenavClose()" disabled>Mis Datos</button>
+    <button mat-menu-item (click)="onSidenavClose();logOut()">Cerrar Sesion</button>
+  </mat-menu>
+
+</mat-nav-list>
+
+
+<!-- Menu para prestador -->
+
+<mat-nav-list *ngIf="!admin">
+  <a mat-list-item routerLink="/home" (click)="onSidenavClose()">
+    <mat-icon>home</mat-icon> <span class="nav-caption">Inicio</span>
+  </a>
+  <mat-list-item [matMenuTriggerFor]="menuPacientes">
+    <mat-icon>face</mat-icon>
+    <span class="nav-caption">Pacientes</span>
+  </mat-list-item>
+  <mat-menu #menuPacientes="matMenu">
+    <button mat-menu-item (click)="onSidenavClose()" disabled>Ver Pacientes asignados</button>    
+  </mat-menu>
+
+  <mat-list-item [matMenuTriggerFor]="menuPrestaciones">
+    <mat-icon>assignment</mat-icon>
+    <span class="nav-caption">Prestaciones</span>
+  </mat-list-item>
+  <mat-menu #menuPrestaciones="matMenu">    
+    <button mat-menu-item routerLink="/prestaciones-asignadas" (click)="onSidenavClose()">Ver Prestaciones Asignadas</button>
+    <button mat-menu-item routerLink="/nuevo-checkup"          (click)="onSidenavClose()">Nueva Visita</button>
+  </mat-menu>
+
+  <mat-list-item [matMenuTriggerFor]="menuMiCuenta">
+    <mat-icon>account_circle</mat-icon>
+    <span class="nav-caption">{{name}}</span>
+  </mat-list-item>
+  <mat-menu #menuMiCuenta="matMenu">
+    <button mat-menu-item (click)="onSidenavClose()" disabled>Mis Datos</button>
+    <button mat-menu-item (click)="onSidenavClose();logOut()">Cerrar Sesion</button>
+  </mat-menu>
+
+</mat-nav-list>

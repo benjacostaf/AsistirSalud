@@ -1,0 +1,30 @@
+.title-header{
+    display: inline-flex;
+    button{
+        float: right;
+    }
+}
+.form-full-width{
+    width:70%;
+    margin-left: 15%;
+}
+
+.mini-fab{
+    margin-left: 5%;
+}
+
+mat-bottom-sheet-container{
+    max-width: none!important;
+    min-width: none!important;
+    width:70%!important;
+    margin-left: 15%!important;
+}
+
+table{
+    width:100%;
+}
+
+.last-column{
+    width: 1%;
+    white-space: nowrap;
+}

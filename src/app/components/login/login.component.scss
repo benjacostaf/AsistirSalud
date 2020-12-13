@@ -1,0 +1,50 @@
+.example-card {
+    max-width: 400px;
+    width: 100%;    
+  }  
+
+  @media (max-width: 480px){
+    .example-card{
+      width: 100%;
+    }
+    .main-div{
+      background-position: center!important;
+    }
+    mat-card{
+      padding-bottom: 5%!important;
+      background-color: #ffffffbf;
+    }
+  }
+
+mat-card-title{
+    justify-content: center!important;
+}
+
+mat-card{
+    text-align: center;    
+    padding-top: 3%;
+    padding-bottom: 3%;    
+}
+
+.main-div{
+    height: 100vh;
+    max-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-position: center left;
+    background-size: cover;
+    background-image: url("../../../assets/imagen-unsplash2.jpg");
+    /* background-repeat: repeat;
+    background-position: left; */
+}
+
+.mat-snack-bar-container{
+  margin-left: auto!important;
+  margin-right: auto!important;
+}
+
+.access-snackbar{
+  background-color: #27AAE1;
+  margin: 0 auto!important;
+}

@@ -1,0 +1,57 @@
+<div class="container">
+<div class="page-header">
+  <button mat-icon-button aria-label="Volver a prestaciones" routerLink="/obras-sociales">
+    <mat-icon style="margin:0 auto;">arrow_back</mat-icon>
+  </button>
+    <h1 class="page-header-title">Nueva Obra Social</h1>
+</div>
+
+<mat-accordion class="example-headers-align">
+    <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Datos obra social
+                <mat-icon>local_hospital</mat-icon>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+<div class="container">
+        <div class="row">
+            <div class="col-12 col-sm-5 me-sm-auto">
+            <mat-form-field>
+                <mat-label>Nombre</mat-label>
+                <input matInput [(ngModel)]="dataHi.name" type="text" name="name">
+            </mat-form-field>
+            </div>
+            <div class="col-12 col-sm-5">
+            <mat-form-field>
+                <mat-label>Localidad</mat-label>
+                <input matInput [(ngModel)]="dataHi.location" type="text" name="location">
+            </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-sm-5 me-sm-auto">
+                <mat-form-field>
+                    <mat-label>Email de contacto</mat-label>
+                    <input matInput [(ngModel)]="dataHi.email" type="email" name="email">
+                </mat-form-field>
+                </div>
+                <div class="col-12 col-sm-5">
+                <mat-form-field>
+                    <mat-label>Telefono de contacto</mat-label>
+                    <input matInput [(ngModel)]="dataHi.phone" type="tel" name="phone">
+                </mat-form-field>
+            </div>
+        </div>
+      </div>
+
+      <div class="col-11 col-offset-1">
+        <mat-action-row>
+            <button mat-button color="warn" routerLink="/tarifas/obras-sociales" (click)="prevStep()">Cancelar</button>
+            <button mat-button color="primary" (click)="nextStep();saveHI()">Guardar</button>
+        </mat-action-row>
+      </div>
+    </mat-expansion-panel>
+
+</mat-accordion>
+</div>

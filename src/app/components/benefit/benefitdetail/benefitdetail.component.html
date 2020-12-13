@@ -1,0 +1,100 @@
+<div class="container">
+    <mat-toolbar>
+          <h1>Detalles de Prestación</h1>
+      <span class="spacer"></span>
+      <button mat-button [matMenuTriggerFor]="menu">
+        <mat-icon>more_vert</mat-icon>
+    </button>
+    </mat-toolbar>
+    <div class="sub-title">
+        <h3>N° Prestacion: 000-00{{benefitdetail.id_benefit}}</h3>
+    </div>
+      <div class="header-row">
+        <mat-form-field class="no-underline">
+            <mat-label>Apellido y Nombre</mat-label>
+            <input matInput readonly value="{{benefitdetail.name}}">
+          </mat-form-field>
+          <mat-form-field class="no-underline">
+            <mat-label>Obra Social</mat-label>
+            <input matInput readonly value="{{benefitdetail.name_health_insurance | uppercase}}">
+          </mat-form-field>
+          <mat-form-field class="no-underline">
+            <mat-label>N° de Obra Social</mat-label>
+            <input matInput readonly value="{{benefitdetail.number_health_insurance}}">
+          </mat-form-field>
+          <mat-form-field class="no-underline">
+            <mat-label>Fecha Inicio</mat-label>
+            <input matInput readonly value="{{benefitdetail.start_at}}">
+          </mat-form-field>
+          <mat-form-field class="no-underline">
+            <mat-label>Fecha Fin</mat-label>
+            <input matInput readonly value="{{benefitdetail.finish_at}}">
+          </mat-form-field>
+          <mat-form-field class="no-underline">
+            <mat-label>Estado</mat-label>
+            <input matInput readonly value="{{benefitdetail.status | benefitStatus}}">
+          </mat-form-field>
+    </div>
+    <div class="header-row">
+      <mat-form-field class="example-full-width no-underline">
+        <mat-label>Diagnóstico</mat-label>
+        <input matInput readonly value="{{benefitdetail.diagnosis}}">
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="container">
+      <mat-table [dataSource]="dataSource" class="mat-elevation-z8" *ngIf="!dataEmpty">
+        <!-- Position Column -->
+        <ng-container matColumnDef="lender">
+          <mat-header-cell *matHeaderCellDef> Prestador </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="requirements">
+          <mat-header-cell *matHeaderCellDef> Requerimiento </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.req}} </mat-cell>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="indications">
+            <mat-header-cell *matHeaderCellDef> Indicaciones </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.ind}} </mat-cell>
+        </ng-container>
+
+          <!-- Symbol Column -->
+        <ng-container matColumnDef="hs">
+          <mat-header-cell *matHeaderCellDef> Horas por sesión </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.hs}} HS </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let fila; columns: displayedColumns;"
+        (click)="openCheckupDetail(fila)"
+        ></mat-row>
+      </mat-table>
+
+      <div class="dataEmpty" *ngIf="dataEmpty">
+        <h3>Momentaneamente no se asignaron prestadores.</h3>
+        <h4 (click)="editBenefit(benefitdetail.id_benefit)"> Asigne prestadores ahora</h4>
+    </div>
+  </div>
+
+      <mat-menu #menu="matMenu" yPosition="below">
+        <ng-template matMenuContent>
+        <button mat-menu-item (click)="editBenefit(benefitdetail.id_benefit)"><mat-icon>create</mat-icon>Editar</button>
+        <button mat-menu-item (click)="deleteBenefit(benefitdetail.id_benefit)"><mat-icon>delete</mat-icon>Eliminar</button>
+        <button mat-menu-item (click)="print()"><mat-icon>print</mat-icon>Imprimir</button>
+      </ng-template>
+      </mat-menu>
+
+      <ng-template #dialog1451 id="dialog1451">
+        <h1 class="text-center">Oops...</h1>
+          <p>La prestación seleccionada posee registros de visitas y requerimientos.
+            <br> ¿Desea eliminar dichas visitas y requerimientos junto a la prestación?</p>
+          <mat-action-row>
+            <button mat-button color="warn" (click)="dismissDialog();">Cancelar</button>
+            <!-- <button mat-button color="accent" (click)="nextStep();sendMessage()">Enviar</button> -->
+            <button mat-button  color="accent" (click)="deleteAll(benefitdetail.id_benefit);">Eliminar</button>
+          </mat-action-row>
+        </ng-template>

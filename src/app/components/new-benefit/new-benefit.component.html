@@ -1,0 +1,207 @@
+<div class="container">
+  <div class="page-header">
+    <button mat-icon-button aria-label="Volver a prestaciones" routerLink="/prestaciones">
+      <mat-icon style="margin:0 auto;">arrow_back</mat-icon>
+    </button>
+      <h1 class="page-header-title">Nueva Prestación</h1>
+    </div>
+
+    <mat-accordion class="example-headers-align">
+        <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <h3>Datos de paciente</h3>
+              <mat-icon>account_circle</mat-icon>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <h5>Seleccione Paciente</h5>
+            <form class="example-form">
+              <mat-form-field class="example-full-width">
+                <input type="text"
+                      placeholder="Ingrese nombre o apellido para iniciar la busqueda del paciente"
+                      aria-label="text"
+                      matInput
+                      [formControl]="myControl"
+                      [matAutocomplete]="auto"
+                      (change)="getPatientSelected()"
+                >
+                <mat-autocomplete #auto="matAutocomplete">
+                  <mat-option *ngFor="let option of options" [value]="option['display']" (click)="setPatientSelect(option['id'])">
+                    {{option.display}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+
+              <button mat-button (click)="newPatient()">Nuevo Paciente <mat-icon>add_circle_outline</mat-icon></button>
+            </form>
+
+          <mat-action-row>
+            <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
+          </mat-action-row>
+        </mat-expansion-panel>
+
+
+        <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <h3>Diagnostico</h3>
+              <mat-icon>map</mat-icon>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <h5>Diagnóstico</h5>
+          <form>
+          <mat-form-field class="example-full-width">
+              <mat-label>Ingrese el diagnóstico</mat-label>
+              <textarea [(ngModel)]="selectDiagnosis" name="selectDiagnosis" matInput placeholder="Paciente que sufrió fractura de cadera derecha..."></textarea>
+          </mat-form-field>
+          </form>
+
+          <div>
+              <h5>Período de tiempo</h5>
+              <mat-form-field id="date_start_at">
+                  <mat-label>Inicio</mat-label>
+                  <input matStartDate matInput [(ngModel)]="selectStart" [matDatepicker]="date_start_at" (focus)="date_start_at.open()" readonly>
+              </mat-form-field>
+              <mat-datepicker touchUi #date_start_at></mat-datepicker>
+
+              <mat-form-field>
+                  <mat-label>Fin</mat-label>
+                  <input matEndDate matInput [(ngModel)]="selectFinish" [matDatepicker]="date_finish_at" (focus)="date_finish_at.open()" readonly>
+              </mat-form-field>
+              <mat-datepicker touchUi #date_finish_at></mat-datepicker>
+          </div>
+
+          <mat-action-row>
+            <button mat-button color="warn" (click)="prevStep()">Anterior</button>
+            <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
+          </mat-action-row>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
+
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <h3>Prestador y Requerimientos</h3>
+              <mat-icon>preview</mat-icon>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <button mat-button color="primary" (click)="openBottomSheet()">Agregar Requerimiento <mat-icon>add_circle_outline</mat-icon></button>
+
+
+        <div>
+          <mat-table [dataSource]="dataSource" class="mat-elevation-z4">
+            <ng-container matColumnDef="Lender">
+              <mat-header-cell *matHeaderCellDef>Prestador</mat-header-cell>
+              <mat-cell *matCellDef="let element">{{element.lender}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="Requirement">
+              <mat-header-cell *matHeaderCellDef>Requerimiento</mat-header-cell>
+              <mat-cell *matCellDef="let element">{{element.req}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="Indication">
+              <mat-header-cell *matHeaderCellDef>Indicación</mat-header-cell>
+              <mat-cell *matCellDef="let element">{{element.ind}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="Hours">
+              <mat-header-cell *matHeaderCellDef>Horas por día</mat-header-cell>
+              <mat-cell *matCellDef="let element">{{element.hs}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="Options">
+              <mat-header-cell *matHeaderCellDef>Más</mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                  <!-- <button mat-button [matMenuTriggerFor]="menu" [matMenuTriggerData]="{element: element}">
+                      <mat-icon>more_vert</mat-icon>
+                  </button> -->
+                  <button class="button-row" mat-menu-item (click)="editBenefitItem(element)">  <mat-icon class="icon-button-row">create</mat-icon></button>
+                  <button class="button-row" mat-menu-item (click)="deleteBenefitItem(element)"><mat-icon class="icon-button-row">delete</mat-icon></button>
+              </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+          </mat-table>
+        </div>
+  <!-- <mat-menu #menu="matMenu" yPosition="below">
+    <ng-template matMenuContent let-aliasMenuItems="element">
+    <button mat-menu-item (click)="editBenefitItem(aliasMenuItems)"><mat-icon>create</mat-icon>Editar</button>
+    <button mat-menu-item (click)="deleteBenefitItem(aliasMenuItems)"><mat-icon>delete</mat-icon>Eliminar</button>
+    <button mat-menu-item><mat-icon>contacts</mat-icon>Contactar</button>
+  </ng-template>
+  </mat-menu> -->
+
+      <!--     <mat-expansion-panel-header>
+              <mat-panel-title>
+                  <h3>Prestador y Requerimientos</h3>
+                  <mat-icon>preview</mat-icon>
+                </mat-panel-title>
+          </mat-expansion-panel-header>
+          <h5>Seleccione prestador</h5>
+          <form class="example-form">
+              <mat-form-field class="example-full-width">
+                <input type="text"
+                      placeholder="Ingrese nombre o apellido de prestador para buscar"
+                      aria-label="Number"
+                      matInput
+                      [formControl]="lenderControl"
+                      [matAutocomplete]="autoL">
+                <mat-autocomplete #autoL="matAutocomplete">
+                  <mat-option *ngFor="let lender of optionsLenders" [value]="lender['display']" (click)="setLenderSelect(lender['id'])">
+                    {{lender.display}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+
+              <button mat-button (click)="newPatient()">Nuevo Prestador <mat-icon>add_circle_outline</mat-icon></button>
+
+              <h5>Tipo de prestación</h5>
+                  <mat-form-field appearance="fill" class="requirements-select">
+                      <mat-label>Prestación</mat-label>
+                      <mat-select [(ngModel)]="selectSRequeriments" name="selectSRequeriments" required>
+                          <mat-option [value]="1">Atención Médica</mat-option>
+                          <mat-option [value]="2">Enfermería</mat-option>
+                          <mat-option [value]="3">Kinesiología</mat-option>
+                          <mat-option [value]="4">Nutricionista</mat-option>
+                      </mat-select>
+                  </mat-form-field>
+
+                  <mat-form-field class="requirements-form">
+                      <mat-label>Indicaciones</mat-label>
+                      <input matInput [(ngModel)]="selectRequeriments" name="selectRequeriments" placeholder="p.ej: 1 vez por día. 2 horas por día.">
+                  </mat-form-field>
+                  <mat-form-field class="requirements-form">
+                    <mat-label>Horas por día</mat-label>
+                    <input matInput [(ngModel)]="selectHoursPDay" name="selectHoursPDay" placeholder="p.ej: 2 horas por día." type="number" min="1" max="24">
+                </mat-form-field>
+            </form> -->
+
+          <mat-action-row>
+            <button mat-button color="warn" (click)="prevStep()">Anterior</button>
+            <!-- <button mat-button color="accent" (click)="nextStep();sendMessage()">Enviar</button> -->
+            <button mat-button color="accent" (click)="saveNewBenefit()">Listo</button>
+          </mat-action-row>
+        </mat-expansion-panel>
+
+      </mat-accordion>
+</div>
+
+
+
+  <ng-template #dialogOk id="dialogOk">
+    <h1 class="text-center">Prestación creada!</h1>
+      <p>¿Desea informar a los prestadores asignados?</p>
+      <div *ngIf="loadNumbers">
+        <ul>
+          <li>{{selectLenderPhone}}</li>
+        </ul>
+      </div>
+      <mat-action-row>
+        <button mat-button color="warn" (click)="dismissDialog();">Cancelar</button>
+        <!-- <button mat-button color="accent" (click)="nextStep();sendMessage()">Enviar</button> -->
+        <button mat-button  color="accent" (click)="messageToLenders();">Enviar Mensaje</button>
+      </mat-action-row>
+    </ng-template>
