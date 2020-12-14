@@ -67,4 +67,8 @@ export class PatientService {
     { headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')
   });
   }
+
+  hasBenefit(id_p:number):Observable<any>{
+    return this.http.get(this.url+"/hasbenefit/"+id_p);
+  }
 }

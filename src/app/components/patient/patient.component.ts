@@ -40,10 +40,22 @@ export class PatientComponent implements OnInit, AfterViewInit {
   public hIData: HealthInsurance[] = [];
   public dataFiltered = new MatTableDataSource();
   public selected = 2;
-  myControl = new FormControl();
-  options: string[] = ['One', 'Two', 'Three'];
-  filteredOptions: Observable<string[]>;
-  
+  public myControl = new FormControl();
+  public options: string[] = ['One', 'Two', 'Three'];
+  public filteredOptions: Observable<string[]>;
+  public filterSelect = 1;
+  public optionsFilters = [
+    {value: 1, display: 'Activos'},
+    {value: 2, display: 'Eliminados'},
+    {value: 3, display: 'Todos'}
+    /* {value: 2, display: 'Inactivo'},
+    {value: 3, display: 'Difunto'},
+    {value: 4, display: 'Completado'},
+    {value: 5, display: 'Cobrado'},
+    {value: 6, display: 'Cobro pendiente'} */
+  ];
+  idPatientElimante: any;
+
   constructor(
     private _patientService: PatientService,
     private _hiService: HealthInsuranceService,
@@ -54,9 +66,17 @@ export class PatientComponent implements OnInit, AfterViewInit {
   ) { }
 
   async ngOnInit(): Promise<void> {
+    await this.getData();
     await this.getHI();
-    this.getData();
+    await this.replaceData();
     console.log(this.dataSource);
+  }
+
+  async selectFilter(opt){
+    this.filterSelect = opt;
+    this.dataSource.data = [];
+    this.patients_table = [];
+    this.replaceData();
   }
 
   ngAfterViewInit(){
@@ -88,10 +108,10 @@ export class PatientComponent implements OnInit, AfterViewInit {
   getData() {
     this._patientService.getPatients().subscribe(async (p: any) => {
       this.allPatients = p['Patients'];
-      this.allPatients.forEach(element => {
+ /*      this.allPatients.forEach(element => {
         this.replaceData(element);
       });
-      this.dataSource.data = this.patients_table;
+      this.dataSource.data = this.patients_table; */
     });
   }
 
@@ -102,7 +122,7 @@ export class PatientComponent implements OnInit, AfterViewInit {
       .afterDismissed();
   }
 
-  async replaceData(patient: Patient) {
+  /* async replaceData() {
     const hi = patient.health_insurance;
     let name_hi: string;
     for (let index = 0; index < this.hIData.length; index++) {
@@ -122,6 +142,88 @@ export class PatientComponent implements OnInit, AfterViewInit {
       status: patient.status
     }
     await this.pushData(sP);
+  } */
+
+  getHIName(id_hi){
+    return new Promise(resolve=>{
+      let HI = '';
+      for(let i = 0; i<this.hIData.length;i++){
+        if(id_hi == this.hIData[i].id){
+          HI = this.hIData[i].name;
+          i = this.hIData.length + 1;
+        }
+      }
+      resolve(HI);
+    });
+  }
+
+
+  replaceData(){
+    return new Promise(resolve=>{
+      console.log(this.allPatients);
+      switch(this.filterSelect){
+        case 1:
+          resolve(this.allPatients.forEach(async element=>{
+              console.log(element);
+              if(element.status==1){
+                let nameHI = await this.getHIName(element.health_insurance);
+                const sp: PatientsTable = {
+                  id: element.id,
+                  surname: element.surname,
+                  name: element.name,
+                  dni: element.dni,
+                  health_insurance: String(await this.getHIName(element.health_insurance)),
+                  number_health_insurance: element.number_health_insurance,
+                  location: element.location,
+                  status: element.status
+                }
+                await this.pushData(sp);
+              }
+            this.dataSource.data = this.patients_table;
+          }));
+          break;
+          case 2:
+            resolve(this.allPatients.forEach(async element=>{
+                console.log(element);
+                if(element.status==0){
+                  let nameHI = await this.getHIName(element.health_insurance);
+                  const sp: PatientsTable = {
+                    id: element.id,
+                    surname: element.surname,
+                    name: element.name,
+                    dni: element.dni,
+                    health_insurance: String(await this.getHIName(element.health_insurance)),
+                    number_health_insurance: element.number_health_insurance,
+                    location: element.location,
+                    status: element.status
+                  }
+                  await this.pushData(sp);
+                }
+              this.dataSource.data = this.patients_table;
+            }));
+            break;
+            case 3:
+              resolve(this.allPatients.forEach(async element=>{
+                  console.log(element);
+                    let nameHI = await this.getHIName(element.health_insurance);
+                    const sp: PatientsTable = {
+                      id: element.id,
+                      surname: element.surname,
+                      name: element.name,
+                      dni: element.dni,
+                      health_insurance: String(await this.getHIName(element.health_insurance)),
+                      number_health_insurance: element.number_health_insurance,
+                      location: element.location,
+                      status: element.status
+                    }
+                    await this.pushData(sp);
+                this.dataSource.data = this.patients_table;
+              }));
+              break;
+              default:
+                break;
+      }
+    });
   }
 
   pushData(item) {
@@ -145,21 +247,36 @@ export class PatientComponent implements OnInit, AfterViewInit {
     console.log(patient);
     this.router.navigate(['/editar-paciente'], { state: { data: patient } });
   }
-  deletePatient(patient: any) {
 
-    this._patientService.deletePatient(patient.id).subscribe(() => {
-      const noti = this._snackBar.open('El paciente fue eliminado correctamente', 'OK', { duration: 2000 });
-      noti.onAction().subscribe(()=>{
-        this.getData();        
-        this.refreshTable();
-      })      
-    },
-      (error) => {
-        const nroError = error.error.error.errorInfo[1];
-        if (nroError == 1451) {
-          const noti = this.openDialogNotif(this.dialogApiError1451);
-        }
-      })
+  deletePatient(patient: any) {
+    this._patientService.hasBenefit(patient.id).subscribe((r:any)=>{
+      if(r){
+        const noti = this.openDialogNotif(this.dialogApiError1451);
+        this.idPatientElimante = patient.id;
+      }else{
+        this._patientService.deletePatient(patient.id).subscribe(()=>{
+          this.notifPatientDeleteOK();
+        });
+      }
+    }),
+    (error)=>{
+      const notiError = this._snackBar.open('Error de servidor, no se pudo determinar si el paciente contiene relaciones','OK', {duration: 2000});
+    }
+  }
+
+  deletePatientData(){
+    this._patientService.deletePatient(this.idPatientElimante).subscribe(()=>{
+      this.notifPatientDeleteOK();
+    })
+  }
+
+  notifPatientDeleteOK(){
+    this._dialog.closeAll();
+    const notif = this._snackBar.open('El paciente fuen eliminado correctamente','OK');
+          notif.onAction().subscribe(()=>{
+            this.getData();
+            this.refreshTable();
+          });
   }
 
   refreshTable(){
@@ -170,6 +287,10 @@ export class PatientComponent implements OnInit, AfterViewInit {
 
   openDialogNotif(templateRef) {
     this._dialog.open(templateRef);
+  }
+
+  dismissDialog(){
+    this._dialog.closeAll();
   }
 
 /**---------------- todo */

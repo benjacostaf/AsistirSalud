@@ -23,6 +23,7 @@ export interface tableBenefit{
   start_at: string;
   finish_at: string;
   status: number;
+  updatedTime: string;
 }
 
 export interface tableItems{
@@ -44,14 +45,16 @@ export interface tableItems{
 export class BenefitdetailComponent implements OnInit, AfterViewInit{
   @ViewChild(MatTable) table: MatTable<any>;
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild('dialog1451') private dialogApiError1451: TemplateRef<any>;
+  @Input('benefitsTable') private tableB:MatTable<any>;
   benefitdetail:tableBenefit;
   public items;
   public dataItems:tableItems[] = [];
   /* public dataSource:MatTableDataSource<any>; */
   public dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
   public dataEmpty=false;
-  @ViewChild('dialog1451') private dialogApiError1451: TemplateRef<any>;
-  @Input('benefitsTable') private tableB:MatTable<any>;
+  public updatedTime:Date;
+  public dataLoaded = false;
   /* public dataSource; */
     constructor(
     @Inject(MAT_BOTTOM_SHEET_DATA)public benefit:any,
@@ -69,21 +72,24 @@ export class BenefitdetailComponent implements OnInit, AfterViewInit{
 
     async ngOnInit(): Promise<void> {
       this.benefitdetail = this.benefit['bnf'];
+      this.updatedTime = new Date(this.benefitdetail.updatedTime);
       console.log(this.benefitdetail);
       await this.getData();
       await this.setDataItems();
       /* this.refresh(); */
       /* await this.assignmentData(); */
-      
-      
+
+
     }
 
     isDataEmpty(){
-      return new Promise(resolve=>{
+      return new Promise(async resolve=>{
         console.log(this.dataSource.data.length);
         if(this.items.length==0){
+          await this.finishLoadItems();
           resolve(this.dataEmpty = true);
         }else{
+          await this.finishLoadItems();
           resolve(this.dataEmpty = false);
         }
       })
@@ -93,7 +99,7 @@ export class BenefitdetailComponent implements OnInit, AfterViewInit{
     return new Promise(async resolve=>{
       console.log(itemsData);
       resolve(this.dataSource = itemsData);
-      console.log(this.dataSource);      
+      console.log(this.dataSource);
     })
   }
 
@@ -113,7 +119,7 @@ export class BenefitdetailComponent implements OnInit, AfterViewInit{
       }
       /* await this.goto('/editar-prestacion',data); */
       this.router.navigate(['/editar-prestacion'], {state: {data:data}});
-    });    
+    });
   }
 
   goto(ruta:string,data:any){
@@ -125,11 +131,11 @@ export class BenefitdetailComponent implements OnInit, AfterViewInit{
   async deleteBenefit(id_b:number){
     if(await(this.isBenefitEmpty(id_b))){
       this._benefitService.deleteBenefitData(id_b).subscribe((p:any)=>{
-        console.log(p);        
+        console.log(p);
         const noti = this._snackBar.open('Prestacion eliminada correctamente','ok');
         noti.onAction().subscribe(async()=>{
           this._bottomSheet.dismiss();
-        })
+        });
       })
     }else{
       const noti = this.openDialogNotif(this.dialogApiError1451);
@@ -144,7 +150,7 @@ export class BenefitdetailComponent implements OnInit, AfterViewInit{
     this._benefitService.deleteBenefitData(id_b).subscribe((r:any)=>{
       console.log(r);
       this.dismissDialog();
-      this.dismissBottomSheet();      
+      this.dismissBottomSheet();
     },
     (error)=>{
       console.log('error');
@@ -152,25 +158,25 @@ export class BenefitdetailComponent implements OnInit, AfterViewInit{
   }
 
   dismissDialog(){
-    this._dialog.closeAll();    
+    this._dialog.closeAll();
   }
 
   dismissBottomSheet(){
     return new Promise(resolve=>{
       resolve(this._bottomSheet.dismiss());
-    });    
+    });
   }
 
-  isBenefitEmpty(id_b:number){ 
+  isBenefitEmpty(id_b:number){
     return new Promise(resolve=>{
       if(this.dataSource.data.length>0){
-        resolve(false);  
+        resolve(false);
       }else{
         resolve(true);
       }
-      
+
     })
-    
+
   }
 
     /* refresh(){
@@ -181,14 +187,14 @@ export class BenefitdetailComponent implements OnInit, AfterViewInit{
           this.dataSource.data = [...this.dataItems];
           console.log('time!');
         },1000)
-        
+
       })
     } */
     getData(){
       return new Promise(resolve=>{
         this._benefitService.getItemsBenefit(this.benefitdetail.id_benefit).subscribe(async (b:any)=>{
           resolve(this.items = b['BenefitItems']);
-          await this.isDataEmpty();
+          /* await this.isDataEmpty(); */
         });
       });
     }
@@ -222,11 +228,15 @@ export class BenefitdetailComponent implements OnInit, AfterViewInit{
         }
         await this.pushDataItems(lender);
         await(this.refresh());
-      }))
-      await(this.logAsync(this.dataItems));
-      
-      await (this.logAsync(this.dataSource));
+        await this.finishLoadItems();
+      }));
     })
+  }
+
+  finishLoadItems(){
+    return new Promise(resolve=>{
+      resolve(this.dataLoaded = true);
+    });
   }
 
   logAsync(data){
@@ -248,7 +258,7 @@ export class BenefitdetailComponent implements OnInit, AfterViewInit{
           resolve(await this.pushDataItems(lender));
         }));
       }); */
-    
+
 
     getLenderName(id_lender){
       return new Promise(resolve=>{
@@ -300,7 +310,7 @@ export class BenefitdetailComponent implements OnInit, AfterViewInit{
 
   addDataSource(){
     return new Promise(resolve=>{
-      resolve(this.items.forEach(async element=>{                
+      resolve(this.items.forEach(async element=>{
         let lender = {
           id_b: element.id_benefit,
           id_l: element.id_lender,

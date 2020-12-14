@@ -73,11 +73,16 @@
         (click)="openCheckupDetail(fila)"
         ></mat-row>
       </mat-table>
-
+      <div class="row">
+        <mat-spinner style="margin: 0 auto; margin-top: 1%;" color="accent" diameter="50"  *ngIf="!dataLoaded"></mat-spinner>
+      </div>
       <div class="dataEmpty" *ngIf="dataEmpty">
         <h3>Momentaneamente no se asignaron prestadores.</h3>
         <h4 (click)="editBenefit(benefitdetail.id_benefit)"> Asigne prestadores ahora</h4>
     </div>
+
+    <!-- <h4 class="txt-right txt-legend">Ultima modificacion: {{ | datetime}}</h4> -->
+    <h4 class="txt-right txt-legend">Ultima modificacion: {{updatedTime | datetime}}</h4>
   </div>
 
       <mat-menu #menu="matMenu" yPosition="below">

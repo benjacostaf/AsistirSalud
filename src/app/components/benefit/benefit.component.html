@@ -4,11 +4,12 @@
   </div>
   <div class="col-12 col-md-10 offset-md-1">
   <div class="row">
-    <div class="col-2 me-auto">
-      <button mat-mini-fab class="mini-fab" routerLink="/nueva-prestacion"><mat-icon>add_circle_outline</mat-icon></button>
-      <button mat-mini-fab class="mini-fab" (click)="exportElmToExcel()"><mat-icon>save_alt</mat-icon></button>
+    <div class="col-4 me-auto">
+      <button mat-flat-button color="accent" routerLink="/nueva-prestacion">Nueva prestación <mat-icon>add_circle_outline</mat-icon></button>
+      <!-- <button mat-mini-fab class="mini-fab" (click)="exportElmToExcel()"><mat-icon>save_alt</mat-icon></button> -->
+      <button mat-flat-button color="accent" class="mini-fab" (click)="prepareDataExport()">Descargar <mat-icon>save_alt</mat-icon></button>
     </div>
-    <div class="col-7 me-auto">
+    <div class="col-5 me-auto">
       <mat-form-field class="form-full-width">
         <mat-label>Buscar Prestacion</mat-label>
         <span matPrefix><mat-icon>search</mat-icon></span>

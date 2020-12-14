@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { HealthInsurance } from 'src/app/models/healthInsurance';
@@ -17,6 +18,7 @@ interface selectOption {
   styleUrls: ['./edit-patient.component.scss']
 })
 export class EditPatientComponent implements OnInit {
+  @ViewChild('dialoghasbenefit') private dialogHasBenefit: TemplateRef<any>;
   public idPatient = history.state.data.id;
   public dataPatient:Patient = new Patient(0,'','',0,0,0,'','',0,'',0,1);
   public hIData:HealthInsurance[] = [];
@@ -34,6 +36,7 @@ export class EditPatientComponent implements OnInit {
     private _patientService: PatientService,
     private _hiService: HealthInsuranceService,
     private _snackBar: MatSnackBar,
+    private _dialog: MatDialog,
     private router: Router
   ) { }
 
@@ -42,6 +45,23 @@ export class EditPatientComponent implements OnInit {
     console.log(this.dataPatient);
     await this.getHI();
     console.log(this.dataPatient);
+  }
+
+  verifyRelationship(){
+    if(this.status==0){
+      this._patientService.hasBenefit(this.dataPatient.id).subscribe((r:any)=>{
+        if(r){
+          const noti = this.openDialogNotif(this.dialogHasBenefit);
+        }else{
+          this.updatePatient();
+        }
+      }),
+      (error)=>{
+        const notiError = this._snackBar.open('Error de servidor, no se pudo determinar si el paciente contiene relaciones','OK', {duration: 2000});
+      }
+    }else{
+      this.updatePatient();
+    }
   }
 
   updatePatient(){
@@ -69,11 +89,13 @@ export class EditPatientComponent implements OnInit {
   }
 
   setPatient(dataP){
-    this.dataPatient = dataP;
-    this.selectHI.id = this.dataPatient.health_insurance;
-    this.status = this.dataPatient.status;
-    console.log(dataP.updated_at);
-    this.updateTime = new Date(dataP.updated_at);
+    return new Promise(resolve=>{
+        this.dataPatient = dataP;
+        console.log(this.dataPatient)
+        this.selectHI.id = Number(this.dataPatient.health_insurance);
+        this.status = this.dataPatient.status;
+        resolve(this.updateTime = new Date(dataP.updated_at));
+    })
   }
 
   getHI():Promise<HealthInsurance>{
@@ -84,6 +106,14 @@ export class EditPatientComponent implements OnInit {
     });
   }
 
+
+  openDialogNotif(templateRef) {
+    this._dialog.open(templateRef);
+  }
+
+  dismissDialog(){
+    this._dialog.closeAll();
+  }
 
 
 

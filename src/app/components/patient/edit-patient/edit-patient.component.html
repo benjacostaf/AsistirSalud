@@ -82,7 +82,7 @@
 
       <mat-action-row>
         <button mat-button color="warn" routerLink="/pacientes">Cancelar</button>
-        <button mat-button color="primary" (click)="nextStep();updatePatient()">Guardar</button>
+        <button mat-button color="primary" (click)="verifyRelationship()">Guardar</button>
       </mat-action-row>
     </mat-expansion-panel>
 
@@ -91,3 +91,13 @@
   <h4 class="txt-right txt-legend">Ultima modificacion: {{updateTime | datetime}}</h4>
 
 </div>
+
+<ng-template #dialoghasbenefit>
+  <h1 class="text-center">Oops...</h1>
+  <p>Existen prestaciones relacionadas al paciente que desea eliminar. <br>
+  ¿Desea Actualizar dichas prestaciones y paciente?</p>
+  <mat-action-row>
+    <button mat-button color="warn" (click)="dismissDialog();">Cancelar</button>
+    <button mat-button color="accent" (click)="dismissDialog();updatePatient();">Actualizar</button>
+  </mat-action-row>
+</ng-template>

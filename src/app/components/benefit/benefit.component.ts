@@ -4,6 +4,7 @@ import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { Benefit } from 'src/app/models/benefit';
+import { BenefitItem } from 'src/app/models/benefitItem';
 import { HealthInsurance } from 'src/app/models/healthInsurance';
 import { Patient } from 'src/app/models/patient';
 import { BenefitService } from 'src/app/services/benefit.service';
@@ -25,8 +26,24 @@ export interface tableBenefit{
   start_at: string;
   finish_at: string;
   status: number;
-  /* updatedTime: string;
-  createdTime: string; */
+  updatedTime: string;
+  /* createdTime: string; */
+}
+
+export interface tableExport{
+  benefit: tableBenefit;
+  items: tableItems[];
+}
+
+export interface tableItems{
+  id_benefit:number;
+  id_lender:number;
+  name: string;
+  req: string;
+  ind: string;
+  hs: number;
+  status: number;
+  updatedTime: string;
 }
 
 
@@ -43,6 +60,7 @@ export class BenefitComponent implements OnInit, AfterViewInit{
   public allHI:HealthInsurance[] = [];
   public allPatients:Patient[] = [];
   public dataTable:tableBenefit[] = [];
+  public dataExport:tableExport[] = [];
   public dataSource = new MatTableDataSource;
   public filterSelect = 1;
   optionsFilters = [
@@ -141,7 +159,7 @@ export class BenefitComponent implements OnInit, AfterViewInit{
           resolve(this.allBenefits.forEach(async element=>{
           for (let index = 0; index < this.allPatients.length; index++){
             console.log(element);
-            if(element.status!=0){
+            if(element.status==1){
               console.log(element);
               console.log(this.allPatients);
               console.log(this.allPatients[index]);
@@ -160,7 +178,7 @@ export class BenefitComponent implements OnInit, AfterViewInit{
           resolve(this.allBenefits.forEach(async element=>{
             console.log(element);
           for (let index = 0; index <= this.allPatients.length; index++){
-            if(element.status==0){
+            if(element.status==0 || element.status == 8 || element.status == 9){
               console.log(element);
               console.log(this.allPatients);
               console.log(this.allPatients[index]);
@@ -215,7 +233,8 @@ export class BenefitComponent implements OnInit, AfterViewInit{
       number_health_insurance : patient.number_health_insurance,
       start_at : benefit.start_at,
       finish_at : benefit.finish_at,
-      status : benefit.status
+      status : benefit.status,
+      updatedTime: benefit['updated_at']
     };
     console.log(bp);
     resolve(bp);
@@ -239,7 +258,11 @@ export class BenefitComponent implements OnInit, AfterViewInit{
     const window = this._bottomSheet.open(BenefitdetailComponent, {
       data: {bnf: benefit}
     }).afterDismissed().subscribe(async()=>{
-      this.tableB.renderRows();
+      this.allBenefits = [];
+      this.dataTable = [];
+      this.dataSource.data = [];
+      await this.getData();
+      await this.replaceData();
     });
   }
 
@@ -263,6 +286,62 @@ export class BenefitComponent implements OnInit, AfterViewInit{
   exportElmToExcel(): void {
     console.log(this.tableExport);
     this._exportService.exportTableElmToExcel(this.tableExport, 'Prestaciones');
+  }
+
+  async prepareDataExport(){
+    for(const b of this.dataTable){
+
+      let items = []
+      let data:tableExport={
+        benefit: {
+          id_benefit : b.id_benefit,
+          id_patient : b.id_patient,
+          name : b.name,
+          diagnosis : b.diagnosis,
+          dni : b.dni,
+          health_insurance: b.health_insurance,
+          name_health_insurance: b.name_health_insurance,
+          number_health_insurance : b.number_health_insurance,
+          start_at : b.start_at,
+          finish_at : b.finish_at,
+          status : b.status,
+          updatedTime: b['updated_at']
+        },
+        items:[]
+        };
+      let its = await this.getItems(b.id_benefit);
+      await this.pushItems(items,its);
+      data.benefit = b;
+      console.log(items);
+      for(const i of items){
+        console.log(i);
+        data.items.push(i);
+      }
+      await(this.pushData(data));
+    }
+    console.log(this.dataExport);
+    await this._exportService.exportDataBenefitToExcel(this.dataExport);;
+  }
+
+  pushData(data){
+    return new Promise(resolve=>{
+      resolve(this.dataExport.push(data));
+    });
+  }
+
+  pushItems(array,items){
+    return new Promise(resolve=>{
+      resolve(array.push(items));
+    });
+  }
+
+  getItems(id_b){
+    return new Promise(resolve=>{
+      this._benefitService.getItemsBenefit(id_b).subscribe((r:any)=>{
+        console.log(r);
+        resolve(r['BenefitItems']);
+      });
+    })
   }
 
 }

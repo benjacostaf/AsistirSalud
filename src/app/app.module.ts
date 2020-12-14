@@ -32,6 +32,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MAT_DATE_LOCALE} from '@angular/material/core';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 import { AuthInterceptortsService } from './services/auth-interceptorts.service';
 import { PatientComponent } from './components/patient/patient.component';
@@ -87,7 +88,7 @@ import { DatetimePipe } from './pipes/datetime.pipe';
     NewBenefitComponent,
     NewCheckupComponent,
     NewRequirementComponent,
-    BenefitsPipe,    
+    BenefitsPipe,
     PatientNamesPipe, BenefitIdPipe, BenefitdetailComponent, CheckupdetailComponent, MapDialogComponent, UrlsafePipe, SplashScreenComponent, BenefitAssignedComponent, TariffHiComponent, NewTariffHiComponent, HealtInsuranceComponent, NewHiComponent, BillingHiComponent, BillingComponent, EditLenderComponent, EditPatientComponent, EditBenefitComponent, DatetimePipe
   ],
   imports: [
@@ -112,11 +113,12 @@ import { DatetimePipe } from './pipes/datetime.pipe';
     MatBottomSheetModule,
     MatExpansionModule,
     MatDatepickerModule,
-    MatNativeDateModule,    
+    MatNativeDateModule,
     MatSelectModule,
     MatSnackBarModule,
     MatSortModule,
     MatButtonToggleModule,
+    MatProgressSpinnerModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
@@ -141,7 +143,7 @@ import { DatetimePipe } from './pipes/datetime.pipe';
     MatButtonToggleModule
   ],
   providers: [
-    {       
+    {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptortsService,
       multi: true,

@@ -2,13 +2,32 @@
 <div class="title-header">
     <h1>Pacientes</h1>
     <!-- <button mat-mini-fab class="mini-fab" (click)="openBottomSheet()"><mat-icon>add_circle_outline</mat-icon></button> -->
-    <button mat-mini-fab class="mini-fab" routerLink="/nuevo-paciente"><mat-icon>add_circle_outline</mat-icon></button>
+    <!-- <button mat-mini-fab class="mini-fab" routerLink="/nuevo-paciente"><mat-icon>add_circle_outline</mat-icon></button> -->
 </div>
 <div class="row">
-  <mat-form-field class="form-full-width">
-    <mat-label>Buscar Paciente</mat-label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="Busqueda por apellido, nombre, número de obra social..." #input autocomplete="off">
-  </mat-form-field>
+  <div class="col-2 me-auto">
+    <button mat-flat-button color="accent" class="mini-fab" routerLink="/nuevo-paciente">Nuevo paciente <mat-icon>add_circle_outline</mat-icon></button>
+  </div>
+  <div class="col-7 me-auto">
+    <mat-form-field class="form-full-width">
+      <mat-label>Buscar Paciente</mat-label>
+      <span matPrefix><mat-icon>search</mat-icon></span>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Busqueda por apellido, nombre, número de obra social..." #input autocomplete="off">
+    </mat-form-field>
+  </div>
+  <div class="col-2">
+    <mat-form-field id="selectPatient" class="no-underline example-full-width" appearance="fill">
+      <mat-label>Filtrar</mat-label>
+      <span matPrefix><mat-icon>filter_list</mat-icon></span>
+      <!-- <mat-select [(ngModel)]="selectSBenefit" name="selectSBenefit" (selectionChange)="setBenefitSelected($event)"> -->
+      <mat-select [(value)]="filterSelect" name="Patient">
+        <mat-option id="Patient" *ngFor="let option of optionsFilters" [value]="option.value" (click)="selectFilter(option.value)">
+          {{option.display}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
   <!-- <p>
     Legacy appearance:
     <mat-button-toggle-group appearance="legacy" name="fontStyle" aria-label="Font Style">
@@ -96,7 +115,7 @@
   <p>Existen prestaciones relacionadas al paciente que desea eliminar. <br>
   ¿Desea eliminar dichas prestaciones y paciente?</p>
   <mat-action-row>
-    <button mat-button color="warn">Cancelar</button>
-    <button mat-button color="accent">Eliminar</button>
+    <button mat-button color="warn" (click)="dismissDialog();">Cancelar</button>
+    <button mat-button color="accent" (click)="deletePatientData();">Eliminar</button>
   </mat-action-row>
 </ng-template>

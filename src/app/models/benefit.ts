@@ -1,5 +1,5 @@
 export class Benefit{
-    constructor(        
+    constructor(
         public id_patient: number,
         public diagnosis: string,
         public start_at: string,

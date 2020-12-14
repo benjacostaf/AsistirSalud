@@ -6,14 +6,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class BenefitsPipe implements PipeTransform {
 
   transform(value: number):string{
-/*
-    {value: 0, display: 'Eliminado'},
-    {value: 1, display: 'Activo'},
-    {value: 2, display: 'Inactivo'},
-    {value: 3, display: 'Difunto'},
-    {value: 4, display: 'Completado'},
-    {value: 5, display: 'Cobrado'},
-    {value: 6, display: 'Cobro pendiente'} */
     let ret;
     switch (value) {
       case 0:
@@ -36,9 +28,17 @@ export class BenefitsPipe implements PipeTransform {
         break;
       case 6:
         ret = 'Cobro pendiente'
-        break;
-        case 7:
-          ret = 'Prestador eliminado'
+      break;
+      case 7:
+        ret = 'Prestador eliminado'
+      break;
+      case 8:
+        ret = 'Paciente eliminado'
+      break;
+      case 9:
+        ret = 'Prestación eliminada'
+      break;
+
       default:
         ret = 'Activo'
         break;
